@@ -2,9 +2,14 @@ package xyz.chaobei.server.config;
 
 import xyz.chaobei.server.annotation.GetMapping;
 import xyz.chaobei.server.annotation.RequestMapping;
+import xyz.chaobei.server.factory.ServletFactory;
+import xyz.chaobei.server.factory.SwitchServletFactory;
+import xyz.chaobei.server.servlet.HttpRequest;
+import xyz.chaobei.server.servlet.impl.GetHttpRequest;
 
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Method;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -22,7 +27,7 @@ public class Configuation {
 
     // GET /api/test -> UserController.test();
     private static final Map<String, Method> GET_MAPPING = new HashMap<>();
-
+    private static final Map<String, Object> URL_OBJECT = new HashMap<>();
 
     public static void init(Class clas) throws Exception {
 
@@ -40,15 +45,17 @@ public class Configuation {
                 continue;
             }
             String fileName = classFile.getName().split("\\.")[0];
-            Class<?> targetClass = urlClassLoader.loadClass(targetDir.concat(fileName));
+            Class<?> typeClass = urlClassLoader.loadClass(targetDir.concat(fileName));
 
-            RequestMapping requestMapping = targetClass.getAnnotation(RequestMapping.class);
+            RequestMapping requestMapping = typeClass.getAnnotation(RequestMapping.class);
             if (requestMapping == null) {
                 continue;
             }
 
+            Object typeObject = typeClass.newInstance();
+
             String base = requestMapping.value();
-            Method[] allRequestMethod = targetClass.getMethods();
+            Method[] allRequestMethod = typeClass.getMethods();
 
             for (Method method : allRequestMethod) {
 
@@ -58,11 +65,26 @@ public class Configuation {
                 }
 
                 String methodUrl = base.concat(getMapping.value());
-                System.out.println(methodUrl);
 
                 GET_MAPPING.put(methodUrl, method);
+                URL_OBJECT.put(methodUrl, typeObject);
             }
         }
+    }
+    /**
+     * <p>解析输入流，获得HTTP
+     * <p>author: <a href='mailto:maruichao52@gmail.com'>MRC</a>
+     *
+     * @param socket 请求
+     * @return void
+     * @since 2022/5/19
+     **/
+    public static void execute(Socket socket) throws Exception {
+
+        ServletFactory servletFactory = SwitchServletFactory.build(socket).get("GET");
+
+        HttpRequest request = servletFactory.request();
+
     }
 
 }

@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
+import java.util.logging.Logger;
 
 /**
  * @description:
@@ -20,14 +21,17 @@ import java.util.Enumeration;
  **/
 public class SimpleServer {
 
+    private static final Logger logger = Logger.getLogger("SimpleServer");
+
     public static void start(int port, Class clas) throws Exception {
 
         Configuation.init(clas);
         ServerSocket serverSocket = new ServerSocket(port);
+        logger.info("Server is start in port:" + port);
 
         Socket socket;
         while ((socket = serverSocket.accept()) != null) {
-
+            Configuation.execute(socket);
         }
 
     }

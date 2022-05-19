@@ -2,8 +2,8 @@ package xyz.chaobei.server.controller;
 
 import xyz.chaobei.server.annotation.GetMapping;
 import xyz.chaobei.server.annotation.RequestMapping;
-import xyz.chaobei.server.servlet.ServletRequest;
-import xyz.chaobei.server.servlet.ServletResponse;
+import xyz.chaobei.server.servlet.HttpRequest;
+import xyz.chaobei.server.servlet.HttpResponse;
 
 /**
  * @description:
@@ -14,7 +14,7 @@ import xyz.chaobei.server.servlet.ServletResponse;
 public class UserController {
 
     @GetMapping(value = "/getById")
-    public void user(ServletRequest request, ServletResponse response) {
+    public void user(HttpRequest request, HttpResponse response) {
 
 
     }
