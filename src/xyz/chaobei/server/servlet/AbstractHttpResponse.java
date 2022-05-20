@@ -1,6 +1,11 @@
 package xyz.chaobei.server.servlet;
 
+import xyz.chaobei.server.enums.HttpCode;
+
+import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @description:
@@ -9,9 +14,33 @@ import java.net.Socket;
  **/
 public abstract class AbstractHttpResponse implements HttpResponse {
 
-    private final Socket socket;
+    protected final Socket socket;
 
-    public AbstractHttpResponse(Socket socket) {
+    protected final OutputStream outputStream;
+    protected final PrintWriter bufferedWriter;
+
+    private final Map<String, String> headers = new HashMap<>();
+
+    public AbstractHttpResponse(Socket socket) throws IOException {
         this.socket = socket;
+        this.outputStream = socket.getOutputStream();
+        this.bufferedWriter = new PrintWriter(new OutputStreamWriter(this.outputStream));
+    }
+
+    @Override
+    public void sendError(HttpCode status) {
+
+    }
+
+    @Override
+    public void addHeader(String name, String value) {
+        headers.put(name, value);
+    }
+
+    @Override
+    public void close() throws IOException {
+        bufferedWriter.close();
+        outputStream.close();
+        socket.close();
     }
 }

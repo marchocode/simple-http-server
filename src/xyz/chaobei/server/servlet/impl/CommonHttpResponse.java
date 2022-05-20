@@ -1,7 +1,11 @@
 package xyz.chaobei.server.servlet.impl;
 
+import xyz.chaobei.server.enums.HttpCode;
 import xyz.chaobei.server.servlet.AbstractHttpResponse;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -12,17 +16,13 @@ import java.net.Socket;
  **/
 public class CommonHttpResponse extends AbstractHttpResponse {
 
-    public CommonHttpResponse(Socket socket) {
+    public CommonHttpResponse(Socket socket) throws IOException {
         super(socket);
     }
 
     @Override
     public OutputStream getOutputStream() {
-        return null;
+        return super.outputStream;
     }
 
-    @Override
-    public void addHeader(String name, String value) {
-
-    }
 }

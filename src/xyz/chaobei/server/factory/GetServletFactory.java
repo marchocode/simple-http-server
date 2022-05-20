@@ -27,7 +27,7 @@ public class GetServletFactory implements ServletFactory {
     }
 
     @Override
-    public HttpResponse response() {
+    public HttpResponse response() throws IOException {
         return new CommonHttpResponse(this.socket);
     }
 }

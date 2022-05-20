@@ -1,5 +1,7 @@
 package xyz.chaobei.server.annotation;
 
+import xyz.chaobei.server.enums.HttpMethod;
+
 import java.lang.annotation.*;
 
 /**
