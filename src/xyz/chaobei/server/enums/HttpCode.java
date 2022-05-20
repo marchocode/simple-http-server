@@ -8,7 +8,7 @@ package xyz.chaobei.server.enums;
 public enum HttpCode {
 
     OK(200, "OK"),
-    NOT_FOUND(404, "NOT FOUND"),
+    NOT_FOUND(404, "NOT_FOUND"),
     ERROR(500, "ERROR");
 
     private final Integer code;

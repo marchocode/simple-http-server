@@ -20,9 +20,4 @@ public class CommonHttpResponse extends AbstractHttpResponse {
         super(socket);
     }
 
-    @Override
-    public OutputStream getOutputStream() {
-        return super.outputStream;
-    }
-
 }

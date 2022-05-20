@@ -74,13 +74,14 @@ public class Configuation {
                     continue;
                 }
 
-                String methodUrl = base.concat(getMapping.method().getValue()+":"+getMapping.value());
+                String methodUrl = getMapping.method().getValue() + ":" + base.concat(getMapping.value());
 
                 URL_METHOD.put(methodUrl, method);
                 URL_OBJECT.put(methodUrl, typeObject);
             }
         }
     }
+
     /**
      * <p>解析输入流，获得HTTP
      * <p>author: <a href='mailto:maruichao52@gmail.com'>MRC</a>
@@ -103,12 +104,12 @@ public class Configuation {
      * <p>
      * <p>author: <a href='mailto:maruichao52@gmail.com'>MRC</a>
      *
-     * @param request 请求封装
+     * @param request  请求封装
      * @param response 响应封装
      * @return void
      * @since 2022/5/20
      **/
-    public static void call(HttpRequest request, HttpResponse response) throws InvocationTargetException, IllegalAccessException {
+    public static void call(HttpRequest request, HttpResponse response) throws Exception {
 
         HttpMethod httpMethod = request.method();
         String path = request.path();
@@ -120,9 +121,12 @@ public class Configuation {
 
         if (Objects.isNull(type) || Objects.isNull(method)) {
             response.sendError(HttpCode.NOT_FOUND);
+            return;
         }
 
         method.invoke(type, request, response);
+        response.build();
+        response.close();
     }
 
 }

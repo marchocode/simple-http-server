@@ -18,4 +18,6 @@ public interface HttpResponse extends Closeable {
     void addHeader(String name, String value) throws IOException;
 
     void sendError(HttpCode status);
+
+    void build();
 }
