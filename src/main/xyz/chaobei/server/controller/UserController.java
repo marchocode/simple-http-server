@@ -1,17 +1,17 @@
 package xyz.chaobei.server.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import xyz.chaobei.server.annotation.GetMapping;
 import xyz.chaobei.server.annotation.RequestMapping;
 import xyz.chaobei.server.annotation.ResponseBody;
 import xyz.chaobei.server.enums.ContextType;
 import xyz.chaobei.server.servlet.HttpRequest;
-import xyz.chaobei.server.servlet.HttpResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @description:
@@ -21,13 +21,14 @@ import java.util.logging.Logger;
 @RequestMapping("/user")
 public class UserController {
 
-    private Logger logger = Logger.getLogger("UserController");
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping(value = "/getById")
     @ResponseBody(type = ContextType.APPLICATION_JSON)
     public Map<String, String> user(HttpRequest request) {
 
-        logger.log(Level.INFO, "header={0}", request.getHeaders().toString());
+        logger.info("request user header={}", request.getHeaders().toString());
+        logger.info("request user path={}", request.path());
 
         Map<String, String> data = new HashMap<>();
 

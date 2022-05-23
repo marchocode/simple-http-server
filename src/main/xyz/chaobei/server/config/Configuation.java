@@ -11,6 +11,7 @@ import xyz.chaobei.server.factory.ServletFactory;
 import xyz.chaobei.server.factory.SimpleServletFactory;
 import xyz.chaobei.server.servlet.HttpRequest;
 import xyz.chaobei.server.servlet.HttpResponse;
+import xyz.chaobei.server.servlet.impl.response.TextHttpResponse;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -116,7 +117,7 @@ public class Configuation {
         Object type = URL_OBJECT.get(url);
         Method method = URL_METHOD.get(url);
         ResponseBody responseBody = RESPONSE_TYPE.get(url);
-        HttpResponse response = servletFactory.response(responseBody.type());
+        HttpResponse response = Objects.isNull(responseBody) ? new TextHttpResponse(socket) : servletFactory.response(responseBody.type());
 
         if (Objects.isNull(type) || Objects.isNull(method) || Objects.isNull(responseBody)) {
             response.sendError(HttpCode.NOT_FOUND);

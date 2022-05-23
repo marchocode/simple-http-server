@@ -42,7 +42,7 @@ public interface HttpResponse extends Closeable {
      * @return void
      * @since 2022/5/23
      **/
-    void sendError(HttpCode status);
+    void sendError(HttpCode status) throws IOException;
 
     /**
      * <p>获得当前请求的响应类型

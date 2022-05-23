@@ -39,8 +39,10 @@ public abstract class AbstractHttpResponse implements HttpResponse {
     }
 
     @Override
-    public void sendError(HttpCode status) {
+    public void sendError(HttpCode status) throws IOException {
+        String error = "<h1>Not Found: 404</h1>";
         this.httpCode = status;
+        this.dateOutputStream.write(error.getBytes());
     }
 
     @Override
