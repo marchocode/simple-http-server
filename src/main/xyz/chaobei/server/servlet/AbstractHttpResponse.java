@@ -1,5 +1,6 @@
 package xyz.chaobei.server.servlet;
 
+import xyz.chaobei.server.enums.ContextType;
 import xyz.chaobei.server.enums.HttpCode;
 import xyz.chaobei.server.enums.HttpVersion;
 
@@ -16,14 +17,15 @@ import java.util.Map;
  **/
 public abstract class AbstractHttpResponse implements HttpResponse {
 
-    protected final Socket socket;
+    private final Socket socket;
 
-    protected final OutputStream outputStream;
-    protected final PrintWriter bufferedWriter;
+    private final OutputStream outputStream;
+    private final PrintWriter bufferedWriter;
 
     private HttpCode httpCode = HttpCode.OK;
     private HttpVersion httpVersion = HttpVersion.HTTP1_1;
-    private OutputStream dateOutputStream = new ByteArrayOutputStream();
+
+    protected ByteArrayOutputStream dateOutputStream = new ByteArrayOutputStream();
 
     private final Map<String, String> headers = new HashMap<>();
 
@@ -66,13 +68,11 @@ public abstract class AbstractHttpResponse implements HttpResponse {
             this.bufferedWriter.println(entry.getKey() + ": " + entry.getValue());
         }
 
-        String message = "hello";
-
-        this.bufferedWriter.println("Content-Type" + ": " + "text/html");
-        this.bufferedWriter.println("Content-Length" + ": " + message.getBytes().length);
+        this.bufferedWriter.println("Content-Type" + ": " + contextType().getValue());
+        this.bufferedWriter.println("Content-Length" + ": " + dateOutputStream.size());
         this.bufferedWriter.println();
 
-        this.bufferedWriter.print(message);
+        this.bufferedWriter.print(dateOutputStream.toString());
 
         this.bufferedWriter.flush();
     }

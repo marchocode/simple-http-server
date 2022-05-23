@@ -1,5 +1,7 @@
 package xyz.chaobei.server.servlet;
 
+import xyz.chaobei.server.enums.HttpMethod;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +16,13 @@ import java.util.regex.Pattern;
  * @author: <a href='mailto:maruichao52@gmail.com'>MRC</a>
  * @since 2022/5/19
  **/
-public abstract class AbstractHttpRequest implements HttpRequest {
+public class AbstractHttpRequest implements HttpRequest {
 
     protected final Socket socket;
     protected final InputStream inputStream;
     protected final BufferedReader bufferedReader;
 
+    private HttpMethod method;
     protected String path;
     protected String version;
     protected Map<String,String> heads;
@@ -39,10 +42,10 @@ public abstract class AbstractHttpRequest implements HttpRequest {
         String title = bufferedReader.readLine();
         String[] arrays = title.split("\\s");
 
+        this.method = HttpMethod.valueOf(arrays[0]);
         this.path = arrays[1];
         this.version = arrays[2];
     }
-
 
     private void buildHeaders(BufferedReader bufferedReader) throws IOException {
 
@@ -89,5 +92,15 @@ public abstract class AbstractHttpRequest implements HttpRequest {
         bufferedReader.close();
         inputStream.close();
         socket.close();
+    }
+
+    @Override
+    public HttpMethod method() {
+        return this.method;
+    }
+
+    @Override
+    public String data() {
+        return null;
     }
 }

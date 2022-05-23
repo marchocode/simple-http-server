@@ -2,9 +2,14 @@ package xyz.chaobei.server.controller;
 
 import xyz.chaobei.server.annotation.GetMapping;
 import xyz.chaobei.server.annotation.RequestMapping;
+import xyz.chaobei.server.annotation.ResponseBody;
+import xyz.chaobei.server.enums.ContextType;
 import xyz.chaobei.server.servlet.HttpRequest;
 import xyz.chaobei.server.servlet.HttpResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +24,18 @@ public class UserController {
     private Logger logger = Logger.getLogger("UserController");
 
     @GetMapping(value = "/getById")
-    public void user(HttpRequest request, HttpResponse response) {
+    @ResponseBody(type = ContextType.APPLICATION_JSON)
+    public Map<String, String> user(HttpRequest request) {
 
         logger.log(Level.INFO, "header={0}", request.getHeaders().toString());
 
+        Map<String, String> data = new HashMap<>();
+
+        data.put("id", UUID.randomUUID().toString());
+        data.put("name", "mrc");
+        data.put("github", "https://github.com/maruichao52");
+
+        return data;
     }
 
 }
